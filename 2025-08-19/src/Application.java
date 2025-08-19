@@ -17,5 +17,6 @@ public class Application {
 
         tc.getTaxesPaid();
         System.out.println(tc);
+        input.close();
     }
 }
