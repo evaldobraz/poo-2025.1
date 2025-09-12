@@ -10,7 +10,7 @@ import java.util.List;
 
 
 public class Facade {
-    List<Employee> employees = new ArrayList<>();
+    static List<Employee> employees = new ArrayList<>();
 
     public void zerarSistema()
     {
@@ -34,9 +34,24 @@ public class Facade {
         return EmployeeService.searchEmployeeField(employees, employeeID, atributo);
     }
 
+    public int getEmpregadoPorNome(String nome, int index) throws EmpregadoNaoExisteException {
+        Employee foundEmployee = EmployeeService.searchByName(nome, index, employees);
+        return  foundEmployee.getId();
+    }
+
+    public void removerEmpregado(String id) throws EmpregadoNaoExisteException {
+        EmployeeService.removeEmployee(employees, id);
+    }
+
+
     public static void encerrarSistema()
     {
-        System.exit(0);
+        //System.exit(0);
+//        List<Employee> emp_copy = employees;
+//        for(Employee employee : employees) {
+//            System.out.println(employee);
+//        }
+
     }
 
 }

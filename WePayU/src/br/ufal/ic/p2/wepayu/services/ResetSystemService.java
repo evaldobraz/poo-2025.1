@@ -5,8 +5,11 @@ import br.ufal.ic.p2.wepayu.models.Employee;
 import java.util.List;
 
 public class ResetSystemService {
-    public static void reset(List<Employee> employee)
+    public static void reset(List<Employee> employeesList)
     {
-        if (!employee.isEmpty()) employee.clear();
+        if (!employeesList.isEmpty()) {
+            employeesList.clear();
+            Employee.resetNextId();
+        }
     }
 }

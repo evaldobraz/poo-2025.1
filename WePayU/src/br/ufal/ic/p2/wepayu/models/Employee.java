@@ -3,14 +3,14 @@ package br.ufal.ic.p2.wepayu.models;
 // import java.time.*;
 
 public class Employee {
-    private static int id;
+    private final int id;
     private static int nextId = 0;
-    private String name;
+    private final String name;
     private String address;
     private double salary;
     private String type;
     private boolean union;
-    private double commission;
+    private double commission = 0;
 
     public Employee(String name, String adress, String type, double salary) throws IllegalArgumentException {
         if(salary < 0) throw new IllegalArgumentException("Salario deve ser nao-negativo.");
@@ -41,30 +41,31 @@ public class Employee {
     }
 
     public String getName() {
-        return name;
+        return this.name;
     }
 
     public String getAddress() {
-        return address;
+        return this.address;
     }
 
     public double getSalary() {
-        return salary;
+        return this.salary;
     }
 
     public String getType() {
-        return type;
+        return this.type;
     }
 
     public boolean isUnion() {
-        return union;
+        return this.union;
     }
 
     public void setUnion(boolean union) {
         this.union = union;
     }
+
     public double getPayment(){
-        return salary;
+        return this.salary;
     };
 
     public double getCommission() {
@@ -72,7 +73,16 @@ public class Employee {
     }
 
     public int getId() {
-        return id;
+        return this.id;
+    }
+
+    public static void resetNextId() {
+        nextId = 0;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("FUNCIONÁRIO: %s, ID: %d", this.name, this.id);
     }
 
 }

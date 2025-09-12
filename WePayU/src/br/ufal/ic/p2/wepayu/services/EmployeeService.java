@@ -5,6 +5,7 @@ import br.ufal.ic.p2.wepayu.enums.EmployeeType;
 import br.ufal.ic.p2.wepayu.exceptions.*;
 import br.ufal.ic.p2.wepayu.models.Employee;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -38,12 +39,18 @@ public class EmployeeService {
         try{
             id = Integer.parseInt(employeeID);
         }catch(NumberFormatException e){
-            throw new EmpregadoNaoExisteException();
+            throw new EmpregadoNaoExisteException("Empregado nao existe.");
         }
 
-        Employee employee = employeeList.get(id);
+        Employee employee = null;
 
-        if(employee == null) throw new EmpregadoNaoExisteException();
+        for(Employee employeeSearch : employeeList) {
+            if(employeeSearch.getId() == id) {
+                employee = employeeSearch;
+            }
+        }
+
+        if(employee == null) throw new EmpregadoNaoExisteException("Empregado nao existe.");
 
         validateAttribute(searchField);
 
@@ -56,6 +63,50 @@ public class EmployeeService {
             case "comissao" -> NumberService.formatAsCurrency(employee.getCommission());
             default -> null;
         };
+    }
+
+
+    public static Employee searchByName(String name, int index, List<Employee> employeeList) throws EmpregadoNaoExisteException{
+        int foundIndex = 1;
+
+        for(Employee employee : employeeList){
+            if(employee.getName().equalsIgnoreCase(name) && foundIndex == index){
+                return employee;
+            }
+            else if(employee.getName().equalsIgnoreCase(name) && foundIndex < index) foundIndex++;
+        }
+
+        throw new EmpregadoNaoExisteException("Nao ha empregado com esse nome.");
+    }
+
+    public static void removeEmployee(List<Employee> employeeList, String id) throws EmpregadoNaoExisteException, AtributoNuloException {
+
+        if(id == null || id.isEmpty()) {
+            throw new AtributoNuloException("Identificacao do empregado nao pode ser nula.");
+        }
+
+        int employeeID;
+
+        try{
+            employeeID = Integer.parseInt(id);
+        }catch(NumberFormatException e){
+            throw new EmpregadoNaoExisteException("Empregado nao existe.");
+        }
+
+        Employee employeeToRemove = null;
+
+        for (Employee employee : employeeList) {
+            if (employee.getId() == employeeID) {
+                employeeToRemove = employee;
+                break;
+            }
+        }
+
+        if(employeeToRemove != null) {
+            employeeList.remove(employeeToRemove);
+        }
+
+        throw new EmpregadoNaoExisteException("Empregado nao existe.");
     }
 
     public static void validateParameters(String name, String address, String type, String  salary)  {
@@ -112,8 +163,6 @@ public class EmployeeService {
     }
 
     public static void validateAttribute(String attribute) throws AtributoNuloException, IllegalTypeException {
-        //if(attribute == null || attribute.isEmpty()) throw new AtributoNuloException("Atributo nao pode ser nulo.");
-
         try{
             EmployeeAttribute validate = EmployeeAttribute.fromString(attribute);
         }catch (IllegalArgumentException e) {
