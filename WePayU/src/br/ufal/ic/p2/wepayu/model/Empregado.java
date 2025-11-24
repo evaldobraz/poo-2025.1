@@ -1,6 +1,6 @@
-package br.ufal.ic.p2.wepayu.models;
+package br.ufal.ic.p2.wepayu.model;
 
-import br.ufal.ic.p2.wepayu.exceptions.EmpregadoNaoExisteException;
+import br.ufal.ic.p2.wepayu.exception.EmpregadoNaoExisteException;
 
 public class Empregado {
     private String nome;
